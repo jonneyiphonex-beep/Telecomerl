@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5f2">
+  <title>Telecomerl | Network diagnostics</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Telecomerl home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>telecomerl</span>
+      </a>
+      <div class="topbar-meta">
+        <span class="live-indicator"><span class="live-dot"></span> Live diagnostics</span>
+        <button class="refresh-button" id="refresh-button" type="button" title="Run checks now">
+          <span class="refresh-icon" aria-hidden="true">&#8635;</span>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="overview" aria-labelledby="page-title">
+        <div class="overview-copy">
+          <p class="eyebrow">NETWORK OPERATIONS <span>/</span> DEVICE OVERVIEW</p>
+          <h1 id="page-title">Connection health</h1>
+          <p class="lede">SIM, radio access, APN and internet reachability in one view.</p>
+        </div>
+        <div class="overall-status" id="overall-status" data-state="loading" aria-live="polite">
+          <span class="status-orb" aria-hidden="true"></span>
+          <div>
+            <span class="status-caption">OVERALL STATUS</span>
+            <strong id="overall-label">Checking connection</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-strip" aria-label="Connection summary">
+        <div class="summary-item">
+          <span class="summary-label">RADIO ACCESS</span>
+          <strong id="summary-radio">--</strong>
+          <span class="summary-note" id="summary-operator">Operator unknown</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">SIM CARD</span>
+          <strong id="summary-sim">--</strong>
+          <span class="summary-note" id="summary-registration">Registration unknown</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">INTERNET PROBES</span>
+          <strong id="summary-probes">--</strong>
+          <span class="summary-note" id="summary-latency">Waiting for first check</span>
+        </div>
+        <div class="summary-item summary-updated">
+          <span class="summary-label">LAST CHECK</span>
+          <strong id="last-checked">Waiting</strong>
+          <span class="summary-note" id="next-check">Checks every 5 seconds</span>
+        </div>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="panel internet-panel" aria-labelledby="internet-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">REACHABILITY</p>
+              <h2 id="internet-title">Internet checks</h2>
+            </div>
+            <span class="panel-count" id="probe-count">0 targets</span>
+          </div>
+          <div class="probe-list" id="probe-list" aria-live="polite">
+            <div class="empty-state">Waiting for the first network check</div>
+          </div>
+          <p class="panel-footnote">HTTP reachability is sampled from the host running Telecomerl.</p>
+        </section>
+
+        <section class="panel radio-panel" aria-labelledby="radio-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CELLULAR</p>
+              <h2 id="radio-title">SIM &amp; radio</h2>
+            </div>
+            <span class="availability" id="modem-availability" data-state="unknown">MODEM UNKNOWN</span>
+          </div>
+          <div class="radio-tier" aria-label="Detected mobile network generation">
+            <span class="radio-tier-value" id="radio-generation">--</span>
+            <div class="radio-tier-copy">
+              <strong id="radio-access-label">Radio access unknown</strong>
+              <span>2G / 3G / 4G / 5G</span>
+            </div>
+          </div>
+          <dl class="detail-list">
+            <div><dt>SIM card</dt><dd id="sim-value">Unknown</dd></div>
+            <div><dt>Roaming status</dt><dd class="roaming-value" id="roaming-value" data-state="unknown">Unknown</dd></div>
+            <div><dt>Registration</dt><dd id="registration-value">Unknown</dd></div>
+            <div><dt>Network operator</dt><dd id="operator-value">Not reported</dd></div>
+          </dl>
+          <p class="panel-footnote">Radio and SIM details require a supported ModemManager device.</p>
+        </section>
+
+        <section class="panel network-panel" aria-labelledby="network-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">HOST CONNECTION</p>
+              <h2 id="network-title">Network &amp; APN</h2>
+            </div>
+            <span class="availability" id="network-availability" data-state="unknown">NETWORK UNKNOWN</span>
+          </div>
+          <dl class="detail-grid">
+            <div><dt>Connection</dt><dd id="connection-value">Not reported</dd></div>
+            <div><dt>APN</dt><dd id="apn-value">Not reported</dd></div>
+            <div><dt>Interface type</dt><dd id="type-value">Not reported</dd></div>
+            <div><dt>IPv4 address</dt><dd id="ip-value">Not reported</dd></div>
+            <div><dt>Gateway</dt><dd id="gateway-value">Not reported</dd></div>
+            <div><dt>Network state</dt><dd id="network-state-value">Unknown</dd></div>
+          </dl>
+          <p class="panel-footnote">APN and interface details are read from NetworkManager when available.</p>
+        </section>
+      </div>
+
+      <footer class="page-footer">
+        <span>Telecomerl <span class="footer-divider">/</span> Host-side diagnostics</span>
+        <span id="connection-message" role="status">Connecting to local diagnostics service...</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

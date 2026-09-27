@@ -1,0 +1,26 @@
+ERLC ?= erlc
+ERL ?= erl
+DOCKER ?= docker
+IMAGE ?= telecomerl:local
+PORT ?= 8080
+EBIN := _build/ebin
+SOURCES := $(wildcard src/*.erl)
+
+.PHONY: compile run docker-build webserver clean
+
+compile:
+	mkdir -p $(EBIN)
+	$(ERLC) -Werror -o $(EBIN) $(SOURCES)
+	cp src/telecomerl.app.src $(EBIN)/telecomerl.app
+
+run: compile
+	TELECOM_STATIC_DIR=$(CURDIR)/static $(ERL) -pa $(EBIN) -noshell -eval 'telecomerl:start(), receive stop -> ok end.'
+
+docker-build:
+	$(DOCKER) build -t $(IMAGE) .
+
+webserver: docker-build
+	$(DOCKER) run --rm -p $(PORT):$(PORT) -e PORT=$(PORT) --env CHECK_INTERVAL_MS --env TELECOM_PROBE_URLS $(IMAGE)
+
+clean:
+	rm -rf _build
